@@ -1,12 +1,18 @@
 import os
+import logging
 from flask import Flask, render_template, redirect, url_for, request, flash, send_from_directory
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 import pandas as pd
 
 app = Flask(__name__)
-app.secret_key = 'your_secret_key'  # Change this to a random secret key in production
+
+# Load the secret key from environment variable
+app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'your_default_secret_key')  # Change this to a random secret key in production
 login_manager = LoginManager()
 login_manager.init_app(app)
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
 
 # Load user data from CSV
 def load_users():
@@ -100,4 +106,5 @@ def files():
     return render_template('files.html', files=uploaded_files)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    # Run the app with Gunicorn in production
+    app.run(host='0.0.0.0', port=int(os.environ.get('PORT',  5000)), debug=False)  # Set debug to False in production
