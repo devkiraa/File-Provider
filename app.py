@@ -99,7 +99,7 @@ def files():
         
         file.save(file_path)
         flash('File successfully uploaded', 'success')
-        return redirect(url_for('files'))
+        return redirect(url_for('files '))
     
     # Display files uploaded by admin
     uploaded_files = os.listdir('uploads')
@@ -107,4 +107,4 @@ def files():
 
 if __name__ == '__main__':
     # Run the app with Gunicorn in production
-    app.run(host='0.0.0.0', port=int(os.environ.get('PORT',  5000)), debug=False)  # Set debug to False in production
+    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)), debug=False)  # Set debug to False in production
