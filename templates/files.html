@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Upload Files{% endblock %}
+
+{% block content %}
+<div class="bg-white p-6 rounded-lg shadow-md">
+    <h2 class="text-2xl font-bold mb-4 text-center">Upload Files</h2>
+    {% if current_user.role == 'admin' %}
+    <form action="{{ url_for('files') }}" method="POST" enctype="multipart/form-data" class="mb-4">
+        <input type="file" name="file" required class="border border-gray-300 p-2 w-full rounded focus:outline-none focus:ring focus:ring-blue-300">
+        <button type="submit" class="bg-blue-500 text-white p-2 rounded w-full hover:bg-blue-600 transition duration-200 mt-2">Upload</button>
+    </form>
+    {% else %}
+    <p class="text-red-500 text-center">You do not have permission to upload files.</p>
+    {% endif %}
+    
+    <h3 class="text-xl font-semibold mt-4">Uploaded Files:</h3>
+    <ul class="mt-2">
+        {% for file in files %}
+            <li class="flex justify-between items-center border-b py-2">
+                <span>{{ file }}</span>
+                <a href="{{ url_for('download_file', filename=file) }}" class="text-blue-500 hover:underline">Download</a>
+            </li>
+        {% endfor %}
+    </ul>
+    
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class="mt-4 text-red-500">
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+</div>
+{% endblock %}
